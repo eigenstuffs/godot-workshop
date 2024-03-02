@@ -1,0 +1,90 @@
+[gd_scene load_steps=6 format=3 uid="uid://snl217hpeaya"]
+
+[ext_resource type="Script" path="res://warp.gd" id="1_7yl0x"]
+
+[sub_resource type="Animation" id="Animation_8pgif"]
+resource_name = "Idle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.75, 0.75), Vector2(0.5, 0.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(20, 20), Vector2(10, 10), Vector2(20, 20)]
+}
+
+[sub_resource type="Animation" id="Animation_nfwyd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.5, 0.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_owtah"]
+_data = {
+"Idle": SubResource("Animation_8pgif"),
+"RESET": SubResource("Animation_nfwyd")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ywpls"]
+size = Vector2(80, 80)
+
+[node name="Warp" type="Area2D"]
+script = ExtResource("1_7yl0x")
+next_scene = "res://level2.tscn"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 80.0
+offset_bottom = 80.0
+scale = Vector2(0.5, 0.5)
+color = Color(1, 1, 0.72549, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_owtah")
+}
+autoplay = "Idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(40, 40)
+shape = SubResource("RectangleShape2D_ywpls")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
